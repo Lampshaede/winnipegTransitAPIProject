@@ -7,7 +7,7 @@ const htmlTask = function(){
 };
 const styleTask = function(){
   return src('src/*.css')
-  .pipe(concat('styles.css'))
+  .pipe(concat('style.css'))
   .pipe(cleanCSS())
   .pipe(dest('dist/'));
 };

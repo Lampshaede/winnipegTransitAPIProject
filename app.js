@@ -23,14 +23,22 @@ const searchType = {
 const parameters = '&usage=long'; 
 
 
- document.querySelector("input").addEventListener("keydown", function(e){
-  if(e.code === 'Enter' || e.code === 'NumpadEnter'){
-    e.preventDefault();
-    data = getQuery(e.target.value, searchType.streetStops);
-    console.log(data);
-  }
+document.querySelector("input").addEventListener("keydown", function(e){
+if(e.code === 'Enter' || e.code === 'NumpadEnter'){
+  e.preventDefault();
+  data = getQuery(e.target.value, searchType.street);
+  console.log(data);
+}
 
 });
+
+/** promiseObject being the data returned by getQuery
+ * x.then((promiseObject) => 
+ * {
+ * console.log(promiseObject.streets[0].key); // outputs 882 with input Corydon
+ * })
+ * 
+ */
 
 const getQuery = async(searchTerm, localSearchType) => {
   let tempSearch = searchTerm;

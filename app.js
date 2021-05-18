@@ -84,10 +84,13 @@ document.querySelector("input").addEventListener("keydown", function(e){
 });
 
 document.querySelector('section.streets').addEventListener('click', function(e){
+
   let streetKey = e.target.getAttribute('data-street-key');
+  if(streetKey !== null){
   data = getQuery(streetKey, searchType.streetStops);
   data.then((data) => { // a list of stops contained in an object (called with data.stops[])
     // from here we have to, for each stop, get the next few incoming buses and output them 
     console.log(data);
-  })
+  }
+  )}
 });

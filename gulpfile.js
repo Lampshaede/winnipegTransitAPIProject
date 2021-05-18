@@ -1,0 +1,14 @@
+const {src, dest, series, parallel} = require('gulp');
+const uglify = require('gulp-uglify')
+const htmlTask = function(){
+  return src('src/*.html').pipe(dest('dist/'));
+};
+const styleTask = function(){
+  return src('src/*.css').pipe(dest('dist/'));
+};
+const jsTask = function(){
+  return src('src/*.js')
+  .pipe(uglify())
+  .pipe(dest('dist/'));
+};
+exports.default = parallel(htmlTask, styleTask, jsTask);

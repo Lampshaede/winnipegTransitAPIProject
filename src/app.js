@@ -84,7 +84,6 @@ document.querySelector("input").addEventListener("keydown", function(e){
 });
 
 document.querySelector('section.streets').addEventListener('click', function(e){
-
   let streetKey = e.target.getAttribute('data-street-key');
   if(streetKey !== null){
   data = getQuery(streetKey, searchType.streetStops);

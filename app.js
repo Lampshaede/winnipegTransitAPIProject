@@ -13,6 +13,7 @@
  * STREETS get STOPS get BUSES
  * 
  */
+const APIKey = '36DdV7a4Ka1tyr8VyrGz';
 const defaultURL = `https://api.winnipegtransit.com/v3/`;
 const searchType = {
   street : 'streets:',
@@ -27,13 +28,13 @@ const searchTerm = 'corydon';
   if(e.code === 'Enter' || e.code === 'NumpadEnter'){
     e.preventDefault();
     console.log(e.target.value);
-    getStreets(e.target.value);
+    console.log(getStreets(e.target.value));
   }
 
 });
 
 const getStreets = async(searchTerm) => {
-  const response = await fetch(`${defaultURL}${searchType.street}${searchTerm}.json&apikey=${APIKey}${parameters}`);
+  const response = await fetch(`${defaultURL}${searchType.street}${searchTerm}.json?&api-key=${APIKey}${parameters}`);
   console.log(response);
   const data = await response.json();
   if(response.status !== 200) {

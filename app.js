@@ -22,12 +22,15 @@ const searchType = {
 }
 const parameters = '&usage=long'; 
 
-
+// I am aware keydown and submit are not the same 
 document.querySelector("input").addEventListener("keydown", function(e){
 if(e.code === 'Enter' || e.code === 'NumpadEnter'){
   e.preventDefault();
   data = getQuery(e.target.value, searchType.street);
-  console.log(data);
+  data.then((data) => {
+    renderSidebar(data.streets);
+    console.log(data);
+  })
 }
 
 });
@@ -61,8 +64,18 @@ const getQuery = async(searchTerm, localSearchType) => {
 
 // I plan to use Promise.allSettled() instead of Promise.all() so that even if I go over my api limit, some of the results will print out. or maybe it will just break halfway ¯\_(ツ)_/¯
 
-const renderSidebar = function(){
-  document.querySelector(".streets")
+const renderSidebar = function(data){ // data format is array of these objects { key: *, name: *, type?: *, leg?: *} all I need is the name.
+  console.dir(data);
+  for(let item of data){
+    addResultToSidebar(item);
+  }
+}
+
+const addResultToSidebar = function(dataEntry){
+  streetID = dataEntry.key;
+  street = dataEntry.name;
+  const streetsList = document.querySelector(".streets");
+  streetsList.insertAdjacentHTML('afterbegin', `<a href="#" data-street-key="${streetID}">${street}</a>`);
 }
 
 const renderContent = function(){

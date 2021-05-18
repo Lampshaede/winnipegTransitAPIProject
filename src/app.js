@@ -54,9 +54,22 @@ const getQuery = async(searchTerm, localSearchType) => {
 // I plan to use Promise.allSettled() instead of Promise.all() so that even if I go over my api limit, some of the results will print out. or maybe it will just break halfway ¯\_(ツ)_/¯
 
 const renderSidebar = function(data){ // data format is array of these objects { key: *, name: *, type?: *, leg?: *} all I need is the name & key
+  clearSidebar();
   console.dir(data);
+  if(data.length === 0){
+    streetsList.insertAdjacentHTML('afterbegin', '<span>Sorry, no results<span>');
+    return;
+  }
   for(let item of data){
     addResultToSidebar(item);
+  }
+}
+
+const clearSidebar = function(){
+  let child = streetsList.firstElementChild;
+  while(child){
+    streetsList.removeChild(child);
+    child = streetsList.firstElementChild;
   }
 }
 

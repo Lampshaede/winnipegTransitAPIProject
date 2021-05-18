@@ -1,9 +1,14 @@
 const {src, dest, parallel} = require('gulp');
-const uglify = require('gulp-uglify')
+const htmlreplace = require('gulp-html-replace');
+const uglify = require('gulp-uglify');
 const cleanCSS = require('gulp-clean-css');
 const concat = require('gulp-concat');
 const htmlTask = function(){
-  return src('src/*.html').pipe(dest('dist/'));
+  return src('src/*.html')
+  .pipe(htmlreplace({
+    'css': 'style.css'
+  }))
+  .pipe(dest('dist/'));
 };
 const styleTask = function(){
   return src('src/*.css')

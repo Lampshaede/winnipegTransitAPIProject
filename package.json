@@ -16,12 +16,12 @@
     "url": "https://github.com/Lampshaede/winnipegTransitAPIProject/issues"
   },
   "homepage": "https://github.com/Lampshaede/winnipegTransitAPIProject#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
+    "gulp-html-replace": "^1.6.2",
     "gulp-uglify": "^3.0.2"
   }
 }

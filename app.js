@@ -20,20 +20,9 @@ const searchType = {
   streetStops : 'stops', // by street ID
   schedule : 'stops/', // by stop ID
 }
+const streetsList = document.querySelector(".streets");
 const parameters = '&usage=long'; 
 
-// I am aware keydown and submit are not the same 
-document.querySelector("input").addEventListener("keydown", function(e){
-if(e.code === 'Enter' || e.code === 'NumpadEnter'){
-  e.preventDefault();
-  data = getQuery(e.target.value, searchType.street);
-  data.then((data) => {
-    renderSidebar(data.streets);
-    console.log(data);
-  })
-}
-
-});
 
 /** promiseObject being the data returned by getQuery
  * x.then((promiseObject) => 
@@ -64,7 +53,7 @@ const getQuery = async(searchTerm, localSearchType) => {
 
 // I plan to use Promise.allSettled() instead of Promise.all() so that even if I go over my api limit, some of the results will print out. or maybe it will just break halfway ¯\_(ツ)_/¯
 
-const renderSidebar = function(data){ // data format is array of these objects { key: *, name: *, type?: *, leg?: *} all I need is the name.
+const renderSidebar = function(data){ // data format is array of these objects { key: *, name: *, type?: *, leg?: *} all I need is the name & key
   console.dir(data);
   for(let item of data){
     addResultToSidebar(item);
@@ -74,10 +63,31 @@ const renderSidebar = function(data){ // data format is array of these objects {
 const addResultToSidebar = function(dataEntry){
   streetID = dataEntry.key;
   street = dataEntry.name;
-  const streetsList = document.querySelector(".streets");
+
   streetsList.insertAdjacentHTML('afterbegin', `<a href="#" data-street-key="${streetID}">${street}</a>`);
 }
 
 const renderContent = function(){
 
 }
+
+// I am aware keydown and submit are not the same 
+document.querySelector("input").addEventListener("keydown", function(e){
+  if(e.code === 'Enter' || e.code === 'NumpadEnter'){
+    e.preventDefault();
+    data = getQuery(e.target.value, searchType.street);
+    data.then((data) => {
+      renderSidebar(data.streets);
+      console.log(data);
+    })
+  }
+});
+
+document.querySelector('section.streets').addEventListener('click', function(e){
+  let streetKey = e.target.getAttribute('data-street-key');
+  data = getQuery(streetKey, searchType.streetStops);
+  data.then((data) => { // a list of stops contained in an object (called with data.stops[])
+    // from here we have to, for each stop, get the next few incoming buses and output them 
+    console.log(data);
+  })
+});

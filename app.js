@@ -55,7 +55,6 @@ const getQuery = async(searchTerm, localSearchType) => {
 
 const renderSidebar = function(data){ // data format is array of these objects { key: *, name: *, type?: *, leg?: *} all I need is the name & key
   clearSidebar();
-  console.dir(data);
   if(data.length === 0){
     streetsList.insertAdjacentHTML('afterbegin', '<span>Sorry, no results<span>');
     return;
@@ -91,7 +90,6 @@ document.querySelector("input").addEventListener("keydown", function(e){
     data = getQuery(e.target.value, searchType.street);
     data.then((data) => {
       renderSidebar(data.streets);
-      console.log(data);
     })
   }
 });

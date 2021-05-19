@@ -21,7 +21,7 @@ const searchType = {
   schedule : 'stops/', // by stop ID
 }
 const streetsList = document.querySelector(".streets");
-const stopsTable = document.querySelector("table");
+const stopsTable = document.querySelector("tbody");
 const parameters = '&usage=long'; 
 
 
@@ -55,7 +55,7 @@ const getQuery = async(searchTerm, localSearchType) => {
 // I plan to use Promise.allSettled() instead of Promise.all() so that even if I go over my api limit, some of the results will print out. or maybe it will just break halfway ¯\_(ツ)_/¯
 
 const renderSidebar = function(data){ // data format is array of these objects { key: *, name: *, type?: *, leg?: *} all I need is the name & key
-  clearSidebar();
+  clearElement(streetsList);
   if(data.length === 0){
     streetsList.insertAdjacentHTML('afterbegin', '<span>Sorry, no results<span>');
     return;
@@ -65,11 +65,11 @@ const renderSidebar = function(data){ // data format is array of these objects {
   }
 }
 // I would've just streetsList.innerHTML = ''; but the internet told me it was bad practice
-const clearSidebar = function(){
-  let street = streetsList.firstElementChild;
-  while(street){
-    streetsList.removeChild(street);
-    street = streetsList.firstElementChild;
+const clearElement = function(enclosingElement){
+  let currentChild = enclosingElement.firstElementChild;
+  while(currentChild){
+    enclosingElement.removeChild(currentChild);
+    currentChild = enclosingElement.firstElementChild;
   }
 }
 
@@ -80,7 +80,10 @@ const addResultToSidebar = function(dataEntry){
   streetsList.insertAdjacentHTML('afterbegin', `<a href="#" data-street-key="${streetID}">${street}</a>`);
 }
 
+
+
 const renderContent = function(stopObjectArray, stopName){
+  clearElement(stopsTable);
   for(let stopObject of stopObjectArray){
   crossStreet = stopObject['stop-schedule'][`stop`][`cross-street`][`name`];
   direction = stopObject['stop-schedule'][`stop`][`direction`];
@@ -152,3 +155,6 @@ document.querySelector('section.streets').addEventListener('click', function(e){
   }
   )}
 });
+
+clearElement(stopsTable);
+clearElement(streetsList);

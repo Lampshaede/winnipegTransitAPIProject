@@ -127,6 +127,7 @@ document.querySelector('section.streets').addEventListener('click', function(e){
       let stopName = data[0][`stop-schedule`][`stop`][`name`];
       renderContent(data, stopName);
       // stop name doesn't change
+      // *** THIS HAS BEEN EXTRACTED TO A FUNCTION***
     // for(let entry of data){
     //   console.log(entry['stop-schedule'][`stop`][`cross-street`][`name`]);
     //   console.log(entry['stop-schedule'][`route-schedules`][0][`route`][`number`]);

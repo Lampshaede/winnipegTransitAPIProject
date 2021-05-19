@@ -64,12 +64,12 @@ const renderSidebar = function(data){ // data format is array of these objects {
     addResultToSidebar(item);
   }
 }
-
+// I would've just streetsList.innerHTML = ''; but the internet told me it was bad practice
 const clearSidebar = function(){
-  let child = streetsList.firstElementChild;
-  while(child){
-    streetsList.removeChild(child);
-    child = streetsList.firstElementChild;
+  let street = streetsList.firstElementChild;
+  while(street){
+    streetsList.removeChild(street);
+    street = streetsList.firstElementChild;
   }
 }
 

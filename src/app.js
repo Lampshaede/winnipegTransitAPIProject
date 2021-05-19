@@ -115,6 +115,7 @@ document.querySelector("input").addEventListener("keydown", function(e){
 
 document.querySelector('section.streets').addEventListener('click', function(e){
   let streetKey = e.target.getAttribute('data-street-key');
+  document.querySelector('#street-name').textContent = `Displaying results for ${e.target.textContent}`;
   if(streetKey !== null){
   data = getQuery(streetKey, searchType.streetStops);
   data.then((data) => { // a list of stops contained in an object (called with data.stops[])
@@ -149,7 +150,7 @@ document.querySelector('section.streets').addEventListener('click', function(e){
        * 
        */
 
-    })
+    }).catch((err) => {});// if it doesn't output errors, there aren't any
     // from here we have to, for each stop, get the next few incoming buses and output them 
     // console.log(data);
   }
@@ -158,3 +159,4 @@ document.querySelector('section.streets').addEventListener('click', function(e){
 
 clearElement(stopsTable);
 clearElement(streetsList);
+document.querySelector('#street-name').textContent = `No Results`;

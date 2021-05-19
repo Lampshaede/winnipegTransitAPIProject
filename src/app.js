@@ -90,15 +90,7 @@ const renderContent = function(stopObjectArray, stopName){
   busRoute = stopObject['stop-schedule'][`route-schedules`][0][`route`][`number`]
   time = stopObject[`stop-schedule`][`route-schedules`][0][`scheduled-stops`][0][`times`][`arrival`][`estimated`];
   stopsTable.insertAdjacentHTML('beforeend', 
-  `
-  <tr>
-  <td>${stopName}</td>
-  <td>${crossStreet}</td>
-  <td>${direction}</td>
-  <td>${busRoute}</td>
-  <td>${time}</td>
-  </tr>
-`);
+  `<tr><td>${stopName}</td><td>${crossStreet}</td><td>${direction}</td><td>${busRoute}</td><td>${time}</td></tr>`);
 }
 }
 

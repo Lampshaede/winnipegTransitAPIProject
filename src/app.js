@@ -21,6 +21,7 @@ const searchType = {
   schedule : 'stops/', // by stop ID
 }
 const streetsList = document.querySelector(".streets");
+const stopsTable = document.querySelector("table");
 const parameters = '&usage=long'; 
 
 
@@ -55,7 +56,6 @@ const getQuery = async(searchTerm, localSearchType) => {
 
 const renderSidebar = function(data){ // data format is array of these objects { key: *, name: *, type?: *, leg?: *} all I need is the name & key
   clearSidebar();
-  console.dir(data);
   if(data.length === 0){
     streetsList.insertAdjacentHTML('afterbegin', '<span>Sorry, no results<span>');
     return;
@@ -80,8 +80,23 @@ const addResultToSidebar = function(dataEntry){
   streetsList.insertAdjacentHTML('afterbegin', `<a href="#" data-street-key="${streetID}">${street}</a>`);
 }
 
-const renderContent = function(){
-
+const renderContent = function(stopObjectArray, stopName){
+  for(let stopObject of stopObjectArray){
+  crossStreet = stopObject['stop-schedule'][`stop`][`cross-street`][`name`];
+  direction = stopObject['stop-schedule'][`stop`][`direction`];
+  busRoute = stopObject['stop-schedule'][`route-schedules`][0][`route`][`number`]
+  time = stopObject[`stop-schedule`][`route-schedules`][0][`scheduled-stops`][0][`times`][`arrival`][`estimated`];
+  stopsTable.insertAdjacentHTML('beforeend', 
+  `
+  <tr>
+  <td>${stopName}</td>
+  <td>${crossStreet}</td>
+  <td>${direction}</td>
+  <td>${busRoute}</td>
+  <td>${time}</td>
+  </tr>
+`);
+}
 }
 
 // I am aware keydown and submit are not the same 
@@ -91,7 +106,6 @@ document.querySelector("input").addEventListener("keydown", function(e){
     data = getQuery(e.target.value, searchType.street);
     data.then((data) => {
       renderSidebar(data.streets);
-      console.log(data);
     })
   }
 });
@@ -101,8 +115,40 @@ document.querySelector('section.streets').addEventListener('click', function(e){
   if(streetKey !== null){
   data = getQuery(streetKey, searchType.streetStops);
   data.then((data) => { // a list of stops contained in an object (called with data.stops[])
+    let array = [];
+    for(let stop of data.stops){
+      array.push(getQuery(stop.key, searchType.schedule));
+    }
+    Promise.all(array).then((data) => {
+      let stopName = data[0][`stop-schedule`][`stop`][`name`];
+      renderContent(data, stopName);
+      // stop name doesn't change
+    // for(let entry of data){
+    //   console.log(entry['stop-schedule'][`stop`][`cross-street`][`name`]);
+    //   console.log(entry['stop-schedule'][`route-schedules`][0][`route`][`number`]);
+    //   console.log(entry['stop-schedule'][`stop`][`direction`]);
+    //   console.log(entry[`stop-schedule`][`route-schedules`][0][`scheduled-stops`][0][`times`][`arrival`][`estimated`]);
+    //   console.log(data);//outputs array of stop objects
+    // }
+      // for each stop object I will output x incoming buses
+
+      /**
+       * 
+       * stopSchedule = `stop-schedule`;
+       * data = getQuery('10125', searchType.schedule);
+       * data.then((data) => {
+       * console.log(data['stop-schedule'][`stop`][`name`]);	
+       * console.log(data['stop-schedule'][`stop`][`cross-street`][`name`]);
+       * console.log(data['stop-schedule'][`route-schedules`][0][`route`][`number`]);
+       * console.log(data['stop-schedule'][`stop`][`direction`]);
+       * console.log(data[`stop-schedule`][`route-schedules`][0][`scheduled-stops`][0][`times`][`arrival`][`estimated`]);
+       *  })
+       * 
+       */
+
+    })
     // from here we have to, for each stop, get the next few incoming buses and output them 
-    console.log(data);
+    // console.log(data);
   }
   )}
 });
